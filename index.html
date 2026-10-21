@@ -1,0 +1,786 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Digitalízate YA 123 - Evaluación Interactiva</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800;900&family=Open+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --primary: #121829;
+            --primary-light: #1e2640;
+            --secondary: #5E227F;
+            --accent: #D81B60;
+            --accent-gradient: linear-gradient(135deg, #8A2387, #E94057, #F27121);
+            --whatsapp: #25D366;
+            --bg-color: #F4F6F9;
+            --card-bg: #FFFFFF;
+            --text-color: #2D3748;
+            --text-light: #718096;
+            --border-radius: 20px;
+            --shadow-md: 0 10px 30px rgba(0, 0, 0, 0.08);
+            --shadow-lg: 0 20px 40px rgba(0, 0, 0, 0.12);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Open Sans', sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            background-image: radial-gradient(circle at 10% 20%, rgba(138, 35, 135, 0.05) 0%, rgba(242, 113, 33, 0.05) 90%);
+            color: var(--text-color);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px 12px;
+        }
+
+        .app-container {
+            width: 100%;
+            max-width: 680px;
+            background: var(--card-bg);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow-lg);
+            overflow: hidden;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .header {
+            background: var(--primary);
+            color: white;
+            padding: 28px 20px;
+            text-align: center;
+            position: relative;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .logo-title {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 900;
+            font-size: 24px;
+            letter-spacing: 0.8px;
+            background: var(--accent-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 6px;
+            display: inline-block;
+        }
+
+        .header-sub {
+            font-size: 13.5px;
+            color: #E2E8F0;
+            opacity: 0.95;
+            font-weight: 500;
+        }
+
+        .progress-bar-container {
+            width: 100%;
+            height: 8px;
+            background: #E2E8F0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            height: 100%;
+            width: 0%;
+            background: var(--accent-gradient);
+            transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .content {
+            padding: 32px 26px;
+        }
+
+        .step {
+            display: none;
+        }
+
+        .step.active {
+            display: block;
+            animation: slideUpFade 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        @keyframes slideUpFade {
+            from {
+                opacity: 0;
+                transform: translateY(16px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        h2 {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 21px;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 14px;
+            line-height: 1.4;
+        }
+
+        p.desc {
+            font-size: 14.5px;
+            color: var(--text-light);
+            margin-bottom: 24px;
+            line-height: 1.65;
+        }
+
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(94, 34, 127, 0.08);
+            color: var(--secondary);
+            padding: 6px 14px;
+            border-radius: 30px;
+            font-size: 12.5px;
+            font-weight: 700;
+            margin-bottom: 16px;
+            border: 1px solid rgba(94, 34, 127, 0.15);
+        }
+
+        .input-group {
+            margin-bottom: 24px;
+        }
+
+        .input-group label {
+            display: block;
+            font-weight: 700;
+            margin-bottom: 8px;
+            font-size: 14px;
+            color: var(--primary);
+        }
+
+        .input-group input, 
+        .input-group textarea {
+            width: 100%;
+            padding: 15px 18px;
+            border: 2px solid #E2E8F0;
+            border-radius: 12px;
+            font-size: 15px;
+            outline: none;
+            transition: all 0.25s ease;
+            background-color: #FAFAFA;
+            color: var(--text-color);
+        }
+
+        .input-group input:focus, 
+        .input-group textarea:focus {
+            border-color: var(--secondary);
+            background-color: #FFFFFF;
+            box-shadow: 0 0 0 4px rgba(94, 34, 127, 0.1);
+        }
+
+        .options-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-bottom: 25px;
+        }
+
+        .option-btn {
+            background: #F8FAFC;
+            border: 2px solid #E2E8F0;
+            padding: 16px 20px;
+            border-radius: 14px;
+            text-align: left;
+            cursor: pointer;
+            font-size: 14.5px;
+            font-weight: 600;
+            color: var(--text-color);
+            transition: all 0.25s ease;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+        }
+
+        .option-btn:hover {
+            border-color: var(--secondary);
+            background: #F1F5F9;
+            transform: translateX(3px);
+        }
+
+        .option-btn.selected {
+            border-color: var(--accent);
+            background: #FFF5F7;
+            color: var(--accent);
+            box-shadow: 0 4px 12px rgba(216, 27, 96, 0.12);
+        }
+
+        .option-btn i {
+            font-size: 16px;
+            opacity: 0.7;
+        }
+
+        .btn-row {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+        }
+
+        .btn-secondary {
+            background: #EDF2F7;
+            color: var(--text-color);
+            border: none;
+            padding: 16px 20px;
+            border-radius: 12px;
+            font-size: 15px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .btn-secondary:hover {
+            background: #E2E8F0;
+        }
+
+        .btn-main {
+            flex: 1;
+            background: var(--accent-gradient);
+            color: white;
+            border: none;
+            padding: 16px;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            box-shadow: 0 6px 20px rgba(216, 27, 96, 0.28);
+            transition: all 0.25s ease;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+            text-align: center;
+        }
+
+        .btn-main:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(216, 27, 96, 0.38);
+        }
+
+        .btn-whatsapp {
+            background: var(--whatsapp);
+            color: white;
+            text-decoration: none;
+            padding: 15px;
+            border-radius: 12px;
+            font-weight: 700;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            margin-top: 15px;
+            font-size: 15px;
+            box-shadow: 0 6px 18px rgba(37, 211, 102, 0.25);
+            transition: all 0.25s ease;
+        }
+
+        .btn-whatsapp:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 22px rgba(37, 211, 102, 0.35);
+        }
+
+        .social-links {
+            display: flex;
+            gap: 12px;
+            margin-top: 18px;
+        }
+
+        .btn-social {
+            flex: 1;
+            padding: 12px 14px;
+            border-radius: 10px;
+            text-decoration: none;
+            color: white;
+            font-weight: 600;
+            font-size: 13.5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: transform 0.2s ease;
+        }
+
+        .btn-social:hover {
+            transform: translateY(-2px);
+        }
+
+        .btn-insta { background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888); }
+        .btn-fb { background: #1877F2; }
+
+        .plan-card {
+            background: #F8FAFC;
+            border-left: 5px solid var(--secondary);
+            padding: 18px;
+            border-radius: 10px;
+            margin-bottom: 16px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+        }
+
+        .plan-card h4 {
+            color: var(--primary);
+            font-size: 15.5px;
+            font-weight: 700;
+            margin-bottom: 6px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .plan-card p {
+            font-size: 13.5px;
+            color: var(--text-light);
+            line-height: 1.5;
+        }
+
+        /* Toast notification */
+        .toast {
+            position: fixed;
+            bottom: 24px;
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            background: #1E293B;
+            color: white;
+            padding: 14px 24px;
+            border-radius: 30px;
+            font-size: 14px;
+            font-weight: 600;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            opacity: 0;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            z-index: 9999;
+        }
+
+        .toast.show {
+            transform: translateX(-50%) translateY(0);
+            opacity: 1;
+        }
+
+        .toast-icon {
+            color: #F43F5E;
+        }
+
+        /* Diagnostic details collapse */
+        .summary-box {
+            background: #F1F5F9;
+            border-radius: 12px;
+            padding: 16px;
+            margin-top: 20px;
+            display: none;
+            max-height: 250px;
+            overflow-y: auto;
+            font-size: 13px;
+        }
+
+        .summary-box.open {
+            display: block;
+        }
+
+        .summary-item {
+            margin-bottom: 10px;
+            padding-bottom: 8px;
+            border-bottom: 1px dashed #CBD5E1;
+        }
+
+        .summary-item:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+        }
+
+        @media (max-width: 480px) {
+            .content {
+                padding: 24px 18px;
+            }
+            .logo-title {
+                font-size: 20px;
+            }
+            .btn-row {
+                flex-direction: column-reverse;
+            }
+            .btn-secondary {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="app-container">
+    <div class="header">
+        <div class="logo-title">DIGITALÍZATE YA 123 🎉✨</div>
+        <div class="header-sub">Todo Comienza Contigo 🥳</div>
+    </div>
+    <div class="progress-bar-container">
+        <div class="progress-bar" id="progressBar"></div>
+    </div>
+
+    <div class="content">
+        <!-- PASO 0: INICIO Y NOMBRE -->
+        <div class="step active" id="step0">
+            <span class="badge"><i class="fas fa-user"></i> Paso 1 de 3: Identificación 🥳</span>
+            <h2>¡Bienvenido(a) a tu Diagnóstico Digital! 🎉</h2>
+            <p class="desc">Descubre en qué punto de tu camino te encuentras y traza una ruta clara hacia tus metas digitales. Para empezar, ¿cómo te llamas?</p>
+            <div class="input-group">
+                <label for="userName">Tu Nombre:</label>
+                <input type="text" id="userName" placeholder="Escribe tu nombre aquí..." autocomplete="off" onkeypress="handleKeyPress(event, startQuiz)">
+            </div>
+            <button class="btn-main" onclick="startQuiz()">
+                <span>¡Comenzar mi Evaluación!</span> <i class="fas fa-rocket"></i>
+            </button>
+        </div>
+
+        <!-- PASO 1: DIAGNÓSTICO (10 PREGUNTAS) -->
+        <div class="step" id="stepDiagnostic">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+                <span class="badge" id="diagCounter"><i class="fas fa-list-check"></i> Diagnóstico (1/10) 🎉</span>
+            </div>
+            <h2 id="diagQuestionTitle">Cargando...</h2>
+            <p class="desc">Selecciona la opción que mejor represente tu situación actual:</p>
+            <div class="options-grid" id="diagOptions"></div>
+            
+            <div class="btn-row" id="diagNavRow" style="display: none; margin-top: 15px;">
+                <button class="btn-secondary" onclick="prevDiagQuestion()">
+                    <i class="fas fa-arrow-left"></i> Anterior
+                </button>
+            </div>
+        </div>
+
+        <!-- PASO 2: MÉTODO DE IDENTIDAD (13 PREGUNTAS) -->
+        <div class="step" id="stepIdentity">
+            <span class="badge" id="identCounter"><i class="fas fa-pen-fancy"></i> Método de Identidad (1/13) ✍️</span>
+            <h2 id="identQuestionTitle">Cargando...</h2>
+            <p class="desc">Reflexiona unos segundos y responde con total honestidad:</p>
+            <div class="input-group">
+                <textarea id="identAnswer" rows="4" placeholder="Escribe tu respuesta aquí..."></textarea>
+            </div>
+            <div class="btn-row">
+                <button class="btn-secondary" onclick="prevIdentityQuestion()">
+                    <i class="fas fa-arrow-left"></i> Anterior
+                </button>
+                <button class="btn-main" onclick="nextIdentityQuestion()">
+                    <span>Siguiente Pregunta</span> <i class="fas fa-arrow-right"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- PASO 3: RESULTADOS Y OFERTA -->
+        <div class="step" id="stepResults">
+            <span class="badge"><i class="fas fa-award"></i> ¡Evaluación Completada! 🥳🎉</span>
+            <h2>¡Felicidades, <span id="resName"></span>! 🎉✨</h2>
+            <p class="desc">Has dado el primer paso hacia tu reinvención. Basado en tus respuestas, este es tu <strong>Plan Estructurado de Ejecución</strong>:</p>
+
+            <div class="plan-card">
+                <h4><i class="fas fa-compass" style="color: #5E227F;"></i> Paso 1: Reconocimiento e Identidad 🧭</h4>
+                <p>Ya tienes claridad sobre quién eres y qué valor puedes aportar. Tu prioridad inicial es confiar en tus conocimientos previos.</p>
+            </div>
+
+            <div class="plan-card">
+                <h4><i class="fas fa-lightbulb" style="color: #E94057;"></i> Paso 2: Actualización Estratégica 💡</h4>
+                <p>Es momento de cerrar la brecha digital aprendiendo las habilidades modernas que realmente demanda el mercado actual.</p>
+            </div>
+
+            <div class="plan-card">
+                <h4><i class="fas fa-rocket" style="color: #F27121;"></i> Paso 3: Acción Coherente y Acompañamiento 🚀</h4>
+                <p>No camines en soledad. Sigue un método probado con acompañamiento para ejecutar paso a paso sin perderte.</p>
+            </div>
+
+            <div style="margin: 25px 0; text-align: center; background: #FFF5F7; padding: 22px; border-radius: 16px; border: 2px dashed var(--accent);">
+                <p style="font-size: 14.5px; font-weight: 600; color: var(--primary); margin-bottom: 16px; line-height: 1.5;">
+                    <span id="resNameOffer"></span>, si quieres dejar de adivinar y actualizarte con las habilidades que exige el mundo digital hoy, tenemos la mejor oportunidad para ti:
+                </p>
+                <a href="https://digitalizateya123.systeme.io" target="_blank" rel="noopener" class="btn-main">
+                    <span>¡CONOCER LA MEJOR OFERTA EN MÉTODO R!</span> <i class="fas fa-external-link-alt"></i>
+                </a>
+            </div>
+
+            <button class="btn-secondary" onclick="toggleSummary()" style="width: 100%; margin-bottom: 10px;">
+                <i class="fas fa-file-alt"></i> <span id="summaryBtnText">Ver Resumen de Mis Respuestas</span>
+            </button>
+
+            <div class="summary-box" id="summaryBox"></div>
+
+            <a href="https://n9.cl/sbd3gr" target="_blank" rel="noopener" class="btn-whatsapp">
+                <i class="fab fa-whatsapp" style="font-size: 20px;"></i> Si tienes dudas, consulta aquí 💬
+            </a>
+
+            <div style="margin-top: 25px; text-align: center;">
+                <p style="font-size: 13px; font-weight: 600; color: var(--text-light); margin-bottom: 12px;">
+                    ¡Sigue nuestras redes para continuar creciendo en conocimiento juntas/os! 🥳✨
+                </p>
+                <div class="social-links">
+                    <a href="https://www.instagram.com/digitalizateya123" target="_blank" rel="noopener" class="btn-social btn-insta">
+                        <i class="fab fa-instagram"></i> Instagram
+                    </a>
+                    <a href="https://www.facebook.com/profile.php?id=61575168848712" target="_blank" rel="noopener" class="btn-social btn-fb">
+                        <i class="fab fa-facebook"></i> Facebook
+                    </a>
+                </div>
+            </div>
+            
+            <div style="text-align: center; margin-top: 20px;">
+                <button onclick="restartQuiz()" style="background: none; border: none; color: var(--text-light); cursor: pointer; font-size: 12px; text-decoration: underline;">
+                    <i class="fas fa-redo"></i> Volver a realizar la evaluación
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Custom Toast Notification -->
+<div class="toast" id="toast">
+    <i class="fas fa-exclamation-circle toast-icon"></i>
+    <span id="toastMsg">Por favor, completa este campo.</span>
+</div>
+
+<script>
+    let userName = "";
+    let currentDiagIndex = 0;
+    let currentIdentIndex = 0;
+
+    let userAnswers = {
+        name: "",
+        diagnostics: {},
+        identity: {}
+    };
+
+    const diagQuestions = [
+        { q: "1. ¿Dónde estás ubicado(a) hoy profesionalmente?", opts: ["Empleado buscando salir", "Emprendedor estancado", "Reinventándome desde cero", "Ofreciendo servicios tradicionales"] },
+        { q: "2. ¿A dónde quieres llegar en los próximos 12 meses?", opts: ["Libertad de tiempo", "Duplicar mis ingresos", "Trabajar 100% digital", "Construir un negocio con propósito"] },
+        { q: "3. Con lo que ya sabes hoy, ¿podrías dar un servicio al mercado?", opts: ["Sí, pero me falta confianza", "Sí, totalmente", "No lo he identificado aún", "Creo que no sé lo suficiente"] },
+        { q: "4. ¿En qué sientes que te tienes que actualizar inmediatamente?", opts: ["Herramientas digitales e IA", "Estrategias de comunicación y ventas", "Creación de contenido", "Estructuración de ofertas"] },
+        { q: "5. ¿Qué requieres aprender para estar al día en la economía digital?", opts: ["Vender con honestidad", "Habilidades técnicas modernas", "Mentalidad y constancia", "Automatizaciones y embudos"] },
+        { q: "6. ¿Buscas ajustar tu camino actual o quieres un cambio radical?", opts: ["Un ajuste paulatino", "Un cambio 100% radical 🎉"] },
+        { q: "7. ¿Cuál ha sido tu mayor obstáculo en intentos anteriores?", opts: ["Sobreinformación o confusión", "Cursos que no cumplieron", "Miedo al fracaso o exposición", "Falta de acompañamiento"] },
+        { q: "8. ¿Cuánto tiempo real estás dispuesto(a) a dedicarle a tu actualización semanalmente?", opts: ["3 a 5 hrs", "5 a 10 hrs", "Más de 10 hrs"] },
+        { q: "9. ¿Qué valoras más al aprender algo nuevo?", opts: ["Que sea probado y honesto", "Acompañamiento real", "Método práctico", "Claridad paso a paso"] },
+        { q: "10. ¿Estás listo(a) para dejar de copiar a otros y construir tu propia versión digital?", opts: ["¡Sí, totalmente decidido/a! 🥳", "Aún tengo dudas pero quiero intentarlo ✨"] }
+    ];
+
+    const identQuestions = [
+        "1. ¿Qué quiero ser?",
+        "2. ¿Qué quiero hacer?",
+        "3. ¿Qué quiero tener?",
+        "4. ¿Cómo me veo en cinco años?",
+        "5. ¿Con lo que sé hoy puedo comenzar?",
+        "6. ¿Esto está alineado con mi visión futura?",
+        "7. ¿En quién debo convertirme para lograr esa meta?",
+        "8. ¿Qué habilidades debo desarrollar?",
+        "9. ¿Cuáles son mis primeros pasos?",
+        "10. ¿Qué es lo mínimo que puedo hacer hoy?",
+        "11. ¿Qué disfruto hacer?",
+        "12. ¿Qué hago con facilidad?",
+        "13. ¿Qué haría incluso sin recibir dinero?"
+    ];
+
+    function showToast(msg) {
+        const toast = document.getElementById("toast");
+        const toastMsg = document.getElementById("toastMsg");
+        toastMsg.innerText = msg;
+        toast.classList.add("show");
+        setTimeout(() => {
+            toast.classList.remove("show");
+        }, 3200);
+    }
+
+    function handleKeyPress(event, callback) {
+        if (event.key === "Enter") {
+            callback();
+        }
+    }
+
+    function updateProgress(percent) {
+        document.getElementById("progressBar").style.width = percent + "%";
+    }
+
+    function startQuiz() {
+        const input = document.getElementById("userName");
+        if (!input.value.trim()) {
+            showToast("Por favor, ingresa tu nombre para continuar.");
+            input.focus();
+            return;
+        }
+        userName = input.value.trim();
+        userAnswers.name = userName;
+
+        document.getElementById("step0").classList.remove("active");
+        document.getElementById("stepDiagnostic").classList.add("active");
+        loadDiagQuestion();
+    }
+
+    function loadDiagQuestion() {
+        const qData = diagQuestions[currentDiagIndex];
+        const titleEl = document.getElementById("diagQuestionTitle");
+        
+        // Personalize question with name
+        titleEl.innerText = qData.q.replace("¿", `¿${userName}, `);
+
+        document.getElementById("diagCounter").innerText = `Diagnóstico (${currentDiagIndex + 1}/10) 🎉`;
+        updateProgress(((currentDiagIndex + 1) / 23) * 100);
+
+        const navRow = document.getElementById("diagNavRow");
+        if (currentDiagIndex > 0) {
+            navRow.style.display = "flex";
+        } else {
+            navRow.style.display = "none";
+        }
+
+        const optsContainer = document.getElementById("diagOptions");
+        optsContainer.innerHTML = "";
+
+        const savedAns = userAnswers.diagnostics[currentDiagIndex + 1];
+
+        qData.opts.forEach(opt => {
+            const btn = document.createElement("button");
+            btn.className = "option-btn" + (savedAns === opt ? " selected" : "");
+            btn.innerHTML = `<span>${opt}</span> <i class="fas fa-chevron-right"></i>`;
+            btn.onclick = () => selectDiagOption(opt);
+            optsContainer.appendChild(btn);
+        });
+    }
+
+    function selectDiagOption(selectedOpt) {
+        userAnswers.diagnostics[currentDiagIndex + 1] = selectedOpt;
+        currentDiagIndex++;
+
+        if (currentDiagIndex < diagQuestions.length) {
+            loadDiagQuestion();
+        } else {
+            document.getElementById("stepDiagnostic").classList.remove("active");
+            document.getElementById("stepIdentity").classList.add("active");
+            loadIdentQuestion();
+        }
+    }
+
+    function prevDiagQuestion() {
+        if (currentDiagIndex > 0) {
+            currentDiagIndex--;
+            loadDiagQuestion();
+        }
+    }
+
+    function loadIdentQuestion() {
+        const qText = identQuestions[currentIdentIndex];
+        document.getElementById("identQuestionTitle").innerText = `${userName}, ${qText.toLowerCase()}`;
+        document.getElementById("identCounter").innerText = `Método de Identidad (${currentIdentIndex + 1}/13) ✍️`;
+        
+        const existingAns = userAnswers.identity[currentIdentIndex + 1] || "";
+        document.getElementById("identAnswer").value = existingAns;
+        updateProgress(((10 + currentIdentIndex + 1) / 23) * 100);
+        document.getElementById("identAnswer").focus();
+    }
+
+    function nextIdentityQuestion() {
+        const answer = document.getElementById("identAnswer").value.trim();
+        userAnswers.identity[currentIdentIndex + 1] = answer || "Sin respuesta";
+
+        currentIdentIndex++;
+
+        if (currentIdentIndex < identQuestions.length) {
+            loadIdentQuestion();
+        } else {
+            finishQuiz();
+        }
+    }
+
+    function prevIdentityQuestion() {
+        if (currentIdentIndex > 0) {
+            currentIdentIndex--;
+            loadIdentQuestion();
+        } else {
+            // Return to diagnostic last question
+            document.getElementById("stepIdentity").classList.remove("active");
+            document.getElementById("stepDiagnostic").classList.add("active");
+            currentDiagIndex = diagQuestions.length - 1;
+            loadDiagQuestion();
+        }
+    }
+
+    function finishQuiz() {
+        try {
+            localStorage.setItem("digitalizateya123_data", JSON.stringify(userAnswers));
+        } catch(e) {
+            console.log("LocalStorage not accessible.");
+        }
+
+        document.getElementById("stepIdentity").classList.remove("active");
+        document.getElementById("stepResults").classList.add("active");
+        
+        document.getElementById("resName").innerText = userName;
+        document.getElementById("resNameOffer").innerText = userName;
+        updateProgress(100);
+
+        buildSummaryHTML();
+    }
+
+    function buildSummaryHTML() {
+        const summaryBox = document.getElementById("summaryBox");
+        let html = `<strong>Diagnóstico Rápido:</strong><br><br>`;
+        
+        for (let i = 1; i <= diagQuestions.length; i++) {
+            html += `<div class="summary-item">
+                <strong>P${i}:</strong> ${userAnswers.diagnostics[i] || 'N/A'}
+            </div>`;
+        }
+
+        html += `<br><strong>Respuestas de Identidad:</strong><br><br>`;
+        for (let j = 1; j <= identQuestions.length; j++) {
+            html += `<div class="summary-item">
+                <strong>${identQuestions[j-1]}</strong><br>
+                <span style="color: #475569;">"${userAnswers.identity[j] || 'Sin respuesta'}"</span>
+            </div>`;
+        }
+
+        summaryBox.innerHTML = html;
+    }
+
+    function toggleSummary() {
+        const summaryBox = document.getElementById("summaryBox");
+        const btnText = document.getElementById("summaryBtnText");
+        summaryBox.classList.toggle("open");
+        if (summaryBox.classList.contains("open")) {
+            btnText.innerText = "Ocultar Resumen";
+        } else {
+            btnText.innerText = "Ver Resumen de Mis Respuestas";
+        }
+    }
+
+    function restartQuiz() {
+        userName = "";
+        currentDiagIndex = 0;
+        currentIdentIndex = 0;
+        userAnswers = { name: "", diagnostics: {}, identity: {} };
+        
+        document.getElementById("userName").value = "";
+        document.getElementById("summaryBox").classList.remove("open");
+        document.getElementById("stepResults").classList.remove("active");
+        document.getElementById("step0").classList.add("active");
+        updateProgress(0);
+    }
+</script>
+</body>
+</html>
